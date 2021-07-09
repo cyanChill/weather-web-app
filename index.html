@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Web App</title>
+    <link href="styles/reset.css" rel="stylesheet" type="text/css" media="screen">
+    <link href="styles/style.css" rel="stylesheet" type="text/css" media="screen">
+    <script src="scripts/main.js" type="module" defer></script>
+</head>
+<body>
+    <header id="timeplace">Are you in incognito mode? Please exit incognito mode to use this web app.</header>
+
+    <div id="selectors">
+        <button id="hourly" type="button" class="selectorbuttons selected">Hourly</button>
+        <button id="weekly" type="button" class="selectorbuttons">Weekly Forcast</button>
+        <button id="settings" type="button" class="selectorbuttons">⚙️ Settings</button>
+    </div>
+    <div id="contentcontainer">
+
+        <div id="hourlycontent" class="">
+            <div id="hourlymainwidget">
+                <div class="bigwidget sunny">
+                    <div class="datetemp">
+                        <p class="date">01:00 PM</p>
+                        <p class="temp">73&deg;F</p>
+                    </div>
+                    <p class="weathersummary">Mostly Sunny</p>
+                </div>
+            </div>
+            <div id="hourlyminorwidgets">
+                <div class="smallwidget sunny">
+                    <div class="datetemp">
+                        <p class="date">02:00 PM</p>
+                        <p class="temp">73&deg;F</p>
+                    </div>
+                    <p class="weathersummary">Mostly Sunny</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="weeklycontent" class="hidden">
+            <div id="weeklymainwidget">
+                <div class="bigwidget sunny">
+                    <div class="datetemp">
+                        <p class="date">September 05, 2021</p>
+                        <p class="temp">73&deg;F</p>
+                    </div>
+                    <p class="weathersummary">Mostly Sunny</p>
+                    <p class="precipitation">Precipitation: 0%</p>
+                </div>
+            </div>
+            <div id="weeklyminorwidgets">
+                <div class="smallwidget sunny">
+                    <div class="datetemp">
+                        <p class="date">September 06, 2021</p>
+                        <p class="temp">73&deg;F</p>
+                    </div>
+                    <p class="weathersummary">Mostly Sunny</p>
+                    <p class="precipitation">Precipitation: 0%</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="settingscontent" class="hidden">
+            <div id="updateindicator" class="success hidden"></div>
+            <div>
+                <label id="inputlabel">Location:</label>
+                <input id="textinputfield" type="text" placeholder="City, State (ie: nyc, ny)" autocomplete="off">
+                <button id="updatebutton" type="button" class="">Update</button>
+            </div>
+
+            <div>
+                <label>Units: 
+                    <input type="radio" id="celsius" name="tempunits" value="celsius" class="input-radio">Celsius
+                    <input type="radio" id="fahrenheit" name="tempunits" value="fahrenheit" class="input-radio">Fahrenheit
+                </label>
+            </div>
+
+            <div id="reference">
+                <p>Resources Used:</p>
+                <ul>
+                    <li><a href="https://weather-gov.github.io/api/general-faqs" target="_blank">api.weather.gov</a></li>
+                    <li><a href="https://developers.arcgis.com/documentation/mapping-apis-and-services/search/geocoding/" target="_blank">geocode.arcgis.com</a></li>
+                    <li><a href="https://www.dovora.com/resources/weather-icons/">Weather Icons by Dovora Interactive</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,92 @@
+/* Weather Widget Related Classes*/
+
+
+/* Common Ground Of Weather Backgrounds */
+.clearnight, .cloudyday, .cloudynight, .fogday, .fognight, .sunnyday, .sunnycloudyday, .sunnyfogday, .sunnyrainday, .sunnyrainthunderday, .rainday, .rainnight, .rainthunderday, .rainthundernight {
+    background-size: contain;
+    background-position: top left;
+    background-repeat: no-repeat;
+}
+
+.night, .clearnight, .cloudynight, .fognight, .rainnight, .rainthundernight {
+    background-color: rgb(101, 80, 129);
+}
+
+.day, .fogday, .sunnyfogday, .sunnyday {
+    background-color: rgb(137,207,239);
+}
+
+.cloudyday, .sunnycloudyday, .rainday, .rainthunderday {
+    background-color: rgb(153, 156, 158);
+}
+
+/* CSS Variables */
+* {
+    --gradient-white: linear-gradient(
+                        to bottom right, 
+                        rgba(255,255,255,0), 
+                        rgba(255,255,255,0.5)
+                      );
+}
+
+
+/* Unique Properties */
+.clearnight {
+    background-image: var(--gradient-white), url('../images/night_full_moon_clear.png');
+}
+
+.cloudyday {
+    background-image: var(--gradient-white), url('../images/overcast.png');
+}
+
+.cloudynight {
+    background-image: var(--gradient-white), url('../images/night_full_moon_partial_cloud.png');
+}
+
+.fogday, .fognight {
+    background-image: var(--gradient-white), url('../images/fog.png');
+}
+
+.sunnyday {
+    background-image: var(--gradient-white), url('../images/day_clear.png');
+}
+
+.sunnycloudyday {
+    background-image: var(--gradient-white), url('../images/day_partial_cloud.png');
+}
+
+.sunnyfogday {
+    background-image: var(--gradient-white), url('../images/sunny_fog.png');
+}
+
+.sunnyrainday {
+    background-color: rgb(107, 145, 163);
+    background-image: var(--gradient-white), url('../images/day_rain.png');
+}
+
+.sunnyrainthunderday {
+    background-color: rgb(107, 145, 163);
+    background-image: var(--gradient-white), url('../images/day_rain_thunder.png');
+}
+
+.rainday {
+    background-image: var(--gradient-white), url('../images/rain.png');
+}
+
+.rainnight {
+    background-image: var(--gradient-white), url('../images/night_full_moon_rain.png');
+}
+
+.rainthunderday {
+    background-image: var(--gradient-white), url('../images/rain_thunder.png');
+}
+
+.rainthundernight {
+    background-image: var(--gradient-white), url('../images/night_full_moon_rain_thunder.png');
+}
+
+
+/* Undefined Weather (Default) */
+.day, .night {
+    background-image: var(--gradient-white);
+}
