@@ -15,7 +15,7 @@ function updateHeader() {
     const location = localStorage.getItem('location');
     const d = new Date();
     const time = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    locationheader.innerHTML = `The time now is ${time} in ${location}.`;
+    locationheader.innerHTML = `The time now is ${time}. Weather shown for ${location}.`;
 }
 
 function calibrateHeaderUpdateInterval() {
