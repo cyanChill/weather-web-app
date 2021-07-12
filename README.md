@@ -2,7 +2,7 @@
 https://cyanchill.github.io/weather-web-app/ 
 
 ## APIs Uses:
-1. NOAA's Weather API (https://weather-gov.github.io/api/general-faqs)
+1. weather.gov Weather API (https://weather-gov.github.io/api/general-faqs)
 2. ArcGIS's Geocoding API (https://developers.arcgis.com/documentation/mapping-apis-and-services/search/geocoding/)
 
 ## Images Used:
