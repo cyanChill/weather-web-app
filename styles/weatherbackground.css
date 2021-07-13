@@ -2,7 +2,7 @@
 
 
 /* Common Ground Of Weather Backgrounds */
-.clearnight, .cloudyday, .cloudynight, .fogday, .fognight, .sunnyday, .sunnycloudyday, .sunnyfogday, .sunnyrainday, .sunnyrainthunderday, .rainday, .rainnight, .rainthunderday, .rainthundernight, .rainthundercloudyday {
+.clearnight, .cloudyday, .cloudynight, .fogday, .fognight, .sunnyday, .sunnycloudyday, .sunnyfogday, .sunnyrainday, .sunnyrainthunderday, .rainday, .rainnight, .rainthunderday, .rainthundernight, .cloudyrainthunderday {
     background-size: contain;
     background-position: top left;
     background-repeat: no-repeat;
@@ -16,7 +16,7 @@
     background-color: rgb(137,207,239);
 }
 
-.cloudyday, .sunnycloudyday, .rainday, .rainthunderday, .rainthundercloudyday {
+.cloudyday, .sunnycloudyday, .rainday, .rainthunderday, .cloudyrainthunderday {
     background-color: rgb(153, 156, 158);
 }
 
@@ -41,6 +41,10 @@
 
 .cloudynight {
     background-image: var(--gradient-white), url('../images/night_full_moon_partial_cloud.png');
+}
+
+.cloudyrainthunderday {
+    background-image: var(--gradient-white), url('../images/rain_thunder.png');
 }
 
 .fogday, .fognight {
@@ -83,10 +87,6 @@
 
 .rainthundernight {
     background-image: var(--gradient-white), url('../images/night_full_moon_rain_thunder.png');
-}
-
-.rainthundercloudyday {
-    background-image: var(--gradient-white), url('../images/rain_thunder.png');
 }
 
 /* Undefined Weather (Default) */
