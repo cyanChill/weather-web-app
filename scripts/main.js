@@ -355,3 +355,4 @@ function defineBackground(weatherSummary, isDayTime) {
     }
     return `${result}night`;
 }
+ 
