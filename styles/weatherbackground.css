@@ -2,7 +2,7 @@
 
 
 /* Common Ground Of Weather Backgrounds */
-.clearnight, .cloudyday, .cloudynight, .fogday, .fognight, .sunnyday, .sunnycloudyday, .sunnyfogday, .sunnyrainday, .sunnyrainthunderday, .rainday, .rainnight, .rainthunderday, .rainthundernight, .cloudyrainthunderday {
+.clearnight, .cloudyday, .cloudynight, .fogday, .fognight, .sunnyday, .sunnycloudyday, .sunnyfogday, .sunnyrainday, .sunnyrainthunderday, .rainday, .rainnight, .rainthunderday, .rainthundernight, .rainthunderfogday, .cloudyrainthunderday {
     background-size: contain;
     background-position: top left;
     background-repeat: no-repeat;
@@ -16,7 +16,7 @@
     background-color: rgb(137,207,239);
 }
 
-.cloudyday, .sunnycloudyday, .rainday, .rainthunderday, .cloudyrainthunderday {
+.cloudyday, .sunnycloudyday, .rainday, .rainthunderday, .rainthunderfogday, .cloudyrainthunderday {
     background-color: rgb(153, 156, 158);
 }
 
@@ -68,7 +68,7 @@
     background-image: var(--gradient-white), url('../images/day_rain.png');
 }
 
-.sunnyrainthunderday {
+.sunnyrainthunderday, .rainthunderfogday {
     background-color: rgb(107, 145, 163);
     background-image: var(--gradient-white), url('../images/day_rain_thunder.png');
 }
