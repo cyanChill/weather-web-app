@@ -11,4 +11,4 @@ export const states = ['alabama', 'al', 'alaska', 'ak', 'arizona', 'az', 'arkans
     List of avaliable types of weather
     - If we want multiple strings to reference to 1 weather state, have the weather states be in an array and have the state we want to return be in the first entry
 */
-export const weatherStates = ['sunny', 'cloudy', ['rain', 'shower'], 'thunder', ['fog', 'haze'], 'clear'];
+export const weatherStates = ['sunny', 'cloudy', ['rain', 'shower', 'drizzle'], 'thunder', ['fog', 'haze'], 'clear'];
