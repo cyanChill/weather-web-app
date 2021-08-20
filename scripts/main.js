@@ -19,17 +19,14 @@ const settingstab = document.querySelector("#settingscontent");
 
 /* Settings Page Elements */
 const textfield = document.querySelector("#textinputfield");
-
 const unitRadioBtns = document.querySelectorAll(".units");
-const celsiusradio = document.querySelector("#celsius");
-const fahrenheitradio = document.querySelector("#fahrenheit");
 const updatebanner = document.querySelector("#updateindicator");
 const updateButton = document.querySelector("#updatebutton");
 
 /* Global Variables */
 let headerinterval;
 let widgetinterval;
-let tempunits;
+let tempunits = "F";
 
 /* Event Listeners */
 document.addEventListener("DOMContentLoaded", () => {
@@ -123,13 +120,10 @@ function calibrateWidgetUpdateInterval() {
 }
 
 function fetchUnits() {
-  if (localStorage.getItem("unit") == "F") {
-    celsiusradio.removeAttribute("checked");
-    fahrenheitradio.setAttribute("checked", "true");
-    tempunits = "F";
-  } else {
-    fahrenheitradio.removeAttribute("checked");
-    celsiusradio.setAttribute("checked", "true");
+  if (localStorage.getItem("unit") === "C") {
+    unitRadioBtns.forEach((radio) => {
+      radio.toggleAttribute("checked");
+    });
     tempunits = "C";
   }
 }
