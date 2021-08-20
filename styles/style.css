@@ -24,7 +24,7 @@
 }
 
 /* Visually Disable Buttons */
-.disabled {
+button[disabled] {
     cursor: default !important;
     background-color: rgb(146, 146, 146) !important;
 }
