@@ -1,4 +1,4 @@
-import { getYearMonthDay, correctTemp, updateTemperature } from "./utilityfunc.js";
+import { getNiceDate, correctTemp, updateTemperature } from "./utilityfunc.js";
 import { fetchCoordinates, fetchWeatherLinks, fetchWeatherData } from "./apifetchfunc.js";
 import { states, weatherStates } from "./const.js";
 
@@ -9,12 +9,12 @@ const locationheader = document.querySelector("#timeplace");
 const tabBtns = document.querySelectorAll(".selectorbuttons");
 
 /* Content Elements */
-const hourlytab = document.querySelector("#hourlycontent");
-const hourlymainwidget = document.querySelector("#hourlymainwidget");
-const hourlyminorwidget = document.querySelector("#hourlyminorwidgets");
-const weeklytab = document.querySelector("#weeklycontent");
-const weeklymainwidget = document.querySelector("#weeklymainwidget");
-const weeklyminorwidget = document.querySelector("#weeklyminorwidgets");
+const hrtab = document.querySelector("#hourlycontent");
+const hrmainwidget = document.querySelector("#hourlymainwidget");
+const hrminorwidget = document.querySelector("#hourlyminorwidgets");
+const wktab = document.querySelector("#weeklycontent");
+const wkmainwidget = document.querySelector("#weeklymainwidget");
+const wkminorwidget = document.querySelector("#weeklyminorwidgets");
 const settingstab = document.querySelector("#settingscontent");
 
 /* Settings Page Elements */
@@ -26,7 +26,6 @@ const updateButton = document.querySelector("#updatebutton");
 /* Global Variables */
 let headerinterval;
 let widgetinterval;
-let tempunits = "F";
 let location = localStorage.getItem("location");
 let forecastLink = localStorage.getItem("forecastlink");
 let unit = localStorage.getItem("unit");
@@ -50,9 +49,9 @@ function handleTabChange() {
   this.classList.add("selected");
   const currentTab = this.dataset.tab;
   if (currentTab === "hourly") {
-    hourlytab.classList.remove("hidden");
+    hrtab.classList.remove("hidden");
   } else if (currentTab === "weekly") {
-    weeklytab.classList.remove("hidden");
+    wktab.classList.remove("hidden");
   } else if (currentTab === "settings") {
     settingstab.classList.remove("hidden");
   }
@@ -65,7 +64,6 @@ unitRadioBtns.forEach((radio) => {
 
 function updateTempUnit() {
   updateLocalStorage("unit", this.dataset.unit);
-  tempunits = this.dataset.unit;
   updateTemperature();
 }
 
@@ -80,8 +78,7 @@ async function startup() {
 
   fetchUnits();
 
-  await updateHourlyWidgets(forecastLink);
-  await updateWeeklyWidgets(forecastLink);
+  updateWidgets();
   calibrateWidgetUpdateInterval();
 
   console.log("Completed Web App Setup");
@@ -109,8 +106,8 @@ function calibrateHeaderUpdateInterval() {
 }
 
 async function updateWidgets() {
-  await updateHourlyWidgets(forecastLink);
-  await updateWeeklyWidgets(forecastLink);
+  await updateWeatherWidgets(forecastLink, "hourly");
+  await updateWeatherWidgets(forecastLink, "weekly");
 }
 
 function calibrateWidgetUpdateInterval() {
@@ -126,7 +123,6 @@ function fetchUnits() {
     unitRadioBtns.forEach((radio) => {
       radio.toggleAttribute("checked");
     });
-    tempunits = "C";
   }
 }
 
@@ -135,8 +131,8 @@ function clearVisuals() {
   tabBtns.forEach((tab) => {
     tab.classList.remove("selected");
   });
-  hourlytab.classList.add("hidden");
-  weeklytab.classList.add("hidden");
+  hrtab.classList.add("hidden");
+  wktab.classList.add("hidden");
   settingstab.classList.add("hidden");
 }
 
@@ -188,101 +184,6 @@ async function updateButtonActions() {
   return updateBanner("success", "Updated Location Successfully!");
 }
 
-async function updateHourlyWidgets(link) {
-  const weatherdata = await fetchWeatherData(link, "/hourly");
-  const d = getYearMonthDay();
-  const date = new Date();
-
-  let mainwidget = false;
-  hourlymainwidget.innerHTML = "";
-  hourlyminorwidget.innerHTML = "";
-
-  let total = 0;
-
-  weatherdata.every((entry) => {
-    const startTime = entry.startTime.slice(0, 16).split("T");
-    if (
-      (startTime[0] == d && date.getHours() > parseInt(startTime[1].slice(0, 2))) ||
-      (total == 0 && startTime[0] != d)
-    ) {
-      /* Filter out the times that passed already*/
-      return true;
-    }
-
-    if (startTime[0] == d || total < 12) {
-      const temp = entry.temperature;
-      const weatherSummary = entry.shortForecast;
-      const isDaytime = entry.isDaytime;
-      const d = new Date(entry.startTime);
-      const time = d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-
-      const action = createWeatherWidget(
-        [hourlymainwidget, hourlyminorwidget],
-        time,
-        mainwidget,
-        temp,
-        weatherSummary,
-        "",
-        isDaytime
-      );
-
-      if (action == 2) {
-        mainwidget = true;
-      }
-      total++;
-      return true;
-    }
-  });
-  console.log(
-    `Updated Hourly Widgets ${date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`
-  );
-}
-
-async function updateWeeklyWidgets(link) {
-  const unfilteredweatherdata = await fetchWeatherData(link);
-  const d = getYearMonthDay();
-  const currdate = new Date();
-  const weatherdata = unfilteredweatherdata.filter((entry) => {
-    const date = entry.startTime.slice(0, 10);
-    return entry.name.toLowerCase().indexOf("night") == -1 && date != d;
-  });
-
-  let mainwidget = false;
-  weeklymainwidget.innerHTML = "";
-  weeklyminorwidget.innerHTML = "";
-
-  weatherdata.forEach((entry) => {
-    let date = new Date(entry.startTime);
-    date = date.toLocaleDateString([], { year: "numeric", month: "long", day: "numeric" });
-    const temp = entry.temperature;
-    const weatherSummary = entry.shortForecast;
-    const detailSummary = entry.detailedForecast;
-    let precipitation = "0%";
-    if (detailSummary.toLowerCase().indexOf("precipitation") != -1) {
-      precipitation = detailSummary.split("precipitation is ")[1].split(".")[0];
-    }
-
-    const action = createWeatherWidget(
-      [weeklymainwidget, weeklyminorwidget],
-      date,
-      mainwidget,
-      temp,
-      weatherSummary,
-      precipitation
-    );
-    if (action == 2) {
-      mainwidget = true;
-    }
-  });
-
-  console.log(
-    `Updated Weekly Widgets ${currdate.toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-    })}`
-  );
-}
-
 function createWeatherWidget(
   widgettype,
   date,
@@ -293,7 +194,6 @@ function createWeatherWidget(
   isDayTime = true
 ) {
   const divwidget = document.createElement("div");
-
   const widgetType = !mainwidget ? "bigwidget" : "smallwidget";
   const widgetBkg = defineWidgetBkg(weatherSummary, isDayTime);
   const hasPrecip = precipitation != "" && precipitation != "0%" ? "" : "noprecip";
@@ -306,14 +206,7 @@ function createWeatherWidget(
     <p class="weathersummary">${weatherSummary}</p>
     ${!hasPrecip ? `<p class="precipitation">Precipitation: ${precipitation}</p>` : ""}
   `;
-
-  if (!mainwidget) {
-    widgettype[0].append(divwidget);
-    return 2;
-  } else {
-    widgettype[1].append(divwidget);
-    return 1;
-  }
+  !mainwidget ? widgettype[0].append(divwidget) : widgettype[1].append(divwidget);
 }
 
 /* Returns a CSS Class Representing Weather Widget Background */
@@ -339,4 +232,86 @@ function defineWidgetBkg(weatherSummary, isDayTime) {
     return `${result}day`;
   }
   return `${result}night`;
+}
+
+async function updateWeatherWidgets(link, type = "") {
+  const isHourly = type === "hourly";
+  const subdomain = isHourly ? "/hourly" : "";
+
+  let weatherdata = await fetchWeatherData(link, subdomain);
+  const currDate = getNiceDate();
+  const dateYMD = `${currDate.year}-${currDate.month}-${currDate.day}`;
+
+  let mainwidget = false;
+  if (isHourly) {
+    hrmainwidget.innerHTML = "";
+    hrminorwidget.innerHTML = "";
+  } else {
+    wkmainwidget.innerHTML = "";
+    wkminorwidget.innerHTML = "";
+  }
+
+  /* Weekly Widget Exclusive */
+  if (!isHourly) {
+    const unfilteredweatherdata = weatherdata;
+    weatherdata = unfilteredweatherdata.filter((entry) => {
+      const date = entry.startTime.slice(0, 10);
+      return entry.name.toLowerCase().indexOf("night") === -1 && date !== dateYMD && date > dateYMD;
+    });
+  }
+
+  let widgetCnt = 0; /* Hourly Widget Exclusive */
+
+  weatherdata.forEach((entry) => {
+    const [startDate, startTime] = entry.startTime.slice(0, 16).split("T");
+    const startHour = startTime.slice(0, 2);
+
+    /* Skip entry if data is for current date but past hour or past date */
+    if (
+      (startDate === dateYMD && currDate.hour > parseInt(startHour)) ||
+      (widgetCnt === 0 && startDate < dateYMD)
+    ) {
+      return;
+    }
+
+    if (startDate === dateYMD || widgetCnt < 12 || !isHourly) {
+      const temp = entry.temperature;
+      const weatherSummary = entry.shortForecast;
+      const detailSummary = entry.detailedForecast.toLowerCase();
+      const isDaytime = entry.isDaytime;
+      let precipitation = "0%";
+
+      // Get the percentage value from the detailed summary
+      if (detailSummary.indexOf("precipitation") != -1) {
+        precipitation = detailSummary.split("precipitation is ")[1].split(".")[0];
+      }
+
+      let date = new Date(entry.startTime);
+      const dateStr = date.toLocaleDateString([], {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+      const timeStr = date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+      const currTab = isHourly ? [hrmainwidget, hrminorwidget] : [wkmainwidget, wkminorwidget];
+      const timeParam = isHourly ? timeStr : dateStr;
+      const precipParam = isHourly ? "" : precipitation;
+
+      createWeatherWidget(
+        currTab,
+        timeParam,
+        mainwidget,
+        temp,
+        weatherSummary,
+        precipParam,
+        isDaytime
+      );
+
+      mainwidget = true;
+      widgetCnt++;
+    }
+  });
+  console.log(
+    `Updated ${isHourly ? "Hourly" : "Weekly"} Widgets ${currDate.niceHour}:${currDate.niceMinutes}`
+  );
 }
