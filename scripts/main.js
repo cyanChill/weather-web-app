@@ -183,8 +183,7 @@ async function updateButtonActions() {
   updateLocalStorage("forecastlink", forecastlink);
 
   updateHeader();
-  await updateHourlyWidgets(forecastlink);
-  await updateWeeklyWidgets(forecastlink);
+  await updateWidgets();
 
   return updateBanner("success", "Updated Location Successfully!");
 }
@@ -294,40 +293,19 @@ function createWeatherWidget(
   isDayTime = true
 ) {
   const divwidget = document.createElement("div");
-  const divDT = document.createElement("div");
-  const [pDate, pTemp, pSum, pPre] = [
-    document.createElement("p"),
-    document.createElement("p"),
-    document.createElement("p"),
-    document.createElement("p"),
-  ];
 
-  if (!mainwidget) {
-    divwidget.classList.add("bigwidget");
-  } else {
-    divwidget.classList.add("smallwidget");
-  }
-  divDT.classList.add("datetemp");
-
-  pDate.classList.add("date");
-  pDate.innerHTML = date;
-  pTemp.classList.add("temp");
-  pTemp.innerHTML = correctTemp(temp);
-  divDT.append(pDate, pTemp);
-
-  pSum.classList.add("weathersummary");
-  pSum.innerHTML = weatherSummary;
-
-  divwidget.classList.add(defineBackground(weatherSummary, isDayTime));
-
-  if (precipitation != "" && precipitation != "0%") {
-    pPre.classList.add("precipitation");
-    pPre.innerHTML = `Precipitation: ${precipitation}`;
-    divwidget.append(divDT, pSum, pPre);
-  } else {
-    divwidget.classList.add("noprecip");
-    divwidget.append(divDT, pSum);
-  }
+  const widgetType = !mainwidget ? "bigwidget" : "smallwidget";
+  const widgetBkg = defineWidgetBkg(weatherSummary, isDayTime);
+  const hasPrecip = precipitation != "" && precipitation != "0%" ? "" : "noprecip";
+  divwidget.classList = `${widgetType} ${widgetBkg} ${hasPrecip}`;
+  divwidget.innerHTML = `
+    <div class="datetemp">
+        <p class="date">${date}</p>
+        <p class="temp">${correctTemp(temp)}</p>
+    </div>
+    <p class="weathersummary">${weatherSummary}</p>
+    ${!hasPrecip ? `<p class="precipitation">Precipitation: ${precipitation}</p>` : ""}
+  `;
 
   if (!mainwidget) {
     widgettype[0].append(divwidget);
@@ -338,7 +316,8 @@ function createWeatherWidget(
   }
 }
 
-function defineBackground(weatherSummary, isDayTime) {
+/* Returns a CSS Class Representing Weather Widget Background */
+function defineWidgetBkg(weatherSummary, isDayTime) {
   let result = "";
   let weatherSum = weatherSummary.toLowerCase();
 
@@ -348,15 +327,11 @@ function defineBackground(weatherSummary, isDayTime) {
         result += entry;
       }
     } else {
-      let include = 0;
-      entry.forEach((entry2) => {
-        if (weatherSum.indexOf(entry2) != -1) {
-          include++;
-        }
-      });
-      if (include > 0) {
-        result += entry[0];
-      }
+      result += entry.some((arrEntry) => {
+        return weatherSum.indexOf(arrEntry) != -1;
+      })
+        ? entry[0]
+        : "";
     }
   });
 
