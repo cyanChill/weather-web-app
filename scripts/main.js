@@ -27,13 +27,16 @@ const updateButton = document.querySelector("#updatebutton");
 let headerinterval;
 let widgetinterval;
 let tempunits = "F";
+let location = localStorage.getItem("location");
+let forecastLink = localStorage.getItem("forecastlink");
+let unit = localStorage.getItem("unit");
 
 /* Event Listeners */
 document.addEventListener("DOMContentLoaded", () => {
-  if (!localStorage.getItem("location")) {
+  if (!location) {
     defaultinitialization();
   }
-  textfield.value = localStorage.getItem("location");
+  textfield.value = location;
   startup();
 });
 
@@ -61,13 +64,13 @@ unitRadioBtns.forEach((radio) => {
 });
 
 function updateTempUnit() {
-  localStorage.setItem("unit", this.dataset.unit);
+  updateLocalStorage("unit", this.dataset.unit);
   tempunits = this.dataset.unit;
   updateTemperature();
 }
 
 updateButton.addEventListener("click", () => {
-  updateButton.setAttribute("disabled", "true");
+  updateButton.toggleAttribute("disabled");
   updateButtonActions();
 });
 
@@ -77,8 +80,8 @@ async function startup() {
 
   fetchUnits();
 
-  await updateHourlyWidgets(localStorage.getItem("forecastlink"));
-  await updateWeeklyWidgets(localStorage.getItem("forecastlink"));
+  await updateHourlyWidgets(forecastLink);
+  await updateWeeklyWidgets(forecastLink);
   calibrateWidgetUpdateInterval();
 
   console.log("Completed Web App Setup");
@@ -86,13 +89,12 @@ async function startup() {
 
 /* General Initialization Functions */
 function defaultinitialization() {
-  localStorage.setItem("location", "NYC, New York");
-  localStorage.setItem("unit", "F");
-  localStorage.setItem("forecastlink", "https://api.weather.gov/gridpoints/OKX/32,34/forecast");
+  updateLocalStorage("location", "NYC, New York");
+  updateLocalStorage("unit", "F");
+  updateLocalStorage("forecastlink", "https://api.weather.gov/gridpoints/OKX/32,34/forecast");
 }
 
 function updateHeader() {
-  const location = localStorage.getItem("location");
   const d = new Date();
   const time = d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   locationheader.innerHTML = `The time now is ${time}. Weather shown for ${location}.`;
@@ -107,8 +109,8 @@ function calibrateHeaderUpdateInterval() {
 }
 
 async function updateWidgets() {
-  await updateHourlyWidgets(localStorage.getItem("forecastlink"));
-  await updateWeeklyWidgets(localStorage.getItem("forecastlink"));
+  await updateHourlyWidgets(forecastLink);
+  await updateWeeklyWidgets(forecastLink);
 }
 
 function calibrateWidgetUpdateInterval() {
@@ -120,7 +122,7 @@ function calibrateWidgetUpdateInterval() {
 }
 
 function fetchUnits() {
-  if (localStorage.getItem("unit") === "C") {
+  if (unit === "C") {
     unitRadioBtns.forEach((radio) => {
       radio.toggleAttribute("checked");
     });
@@ -138,6 +140,18 @@ function clearVisuals() {
   settingstab.classList.add("hidden");
 }
 
+/* Update Local Storage & Global Variable */
+function updateLocalStorage(key, value) {
+  localStorage.setItem(key, value);
+  if (key === "location") {
+    location = value;
+  } else if (key === "forecastlink") {
+    forecastLink = value;
+  } else if (key === "unit") {
+    unit = value;
+  }
+}
+
 /* Settings Functions */
 function updateBanner(status, msg) {
   updatebanner.innerHTML = msg;
@@ -149,31 +163,24 @@ function updateBanner(status, msg) {
 
 async function updateButtonActions() {
   const txtcontents = textfield.value.split(",");
-  if (txtcontents.length != 2) {
+  const [city, state] = [txtcontents[0], txtcontents[1].trim().toLowerCase()];
+
+  if (txtcontents.length != 2 || !states.includes(state)) {
     return updateBanner("error", "Error: Invalid Location");
   }
-  const city = txtcontents[0].replace(" ", "%20");
-  const region = txtcontents[1].trim().toLowerCase();
-  let coordresults, forecastlink;
-
-  if (!states.includes(region)) {
-    return updateBanner("error", "Error: Invalid Location");
-  }
-
   updatebanner.classList.add("hidden");
 
-  coordresults = await fetchCoordinates(city, region);
-  if (coordresults == null) {
+  let coordresults = await fetchCoordinates(city, state);
+  if (coordresults === null) {
     return updateBanner("error", "Error: Failed to Fetch Location");
   }
-
-  if (coordresults[0] == localStorage.getItem("location")) {
+  if (coordresults[0] === location) {
     return updateBanner("error", "Error: Same Location");
   }
-  localStorage.setItem("location", coordresults[0]);
+  updateLocalStorage("location", coordresults[0]);
 
-  forecastlink = await fetchWeatherLinks(coordresults[1], coordresults[2]);
-  localStorage.setItem("forecastlink", forecastlink);
+  let forecastlink = await fetchWeatherLinks(coordresults[1], coordresults[2]);
+  updateLocalStorage("forecastlink", forecastlink);
 
   updateHeader();
   await updateHourlyWidgets(forecastlink);
@@ -227,10 +234,6 @@ async function updateHourlyWidgets(link) {
       return true;
     }
   });
-  /*
-    localStorage.setItem('hourlyWidgets', hourlytab.innerHTML);
-    localStorage.setItem('lastupdate', `${date.toDateString()} ${date.getHours()}`);
-    */
   console.log(
     `Updated Hourly Widgets ${date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`
   );
@@ -272,10 +275,7 @@ async function updateWeeklyWidgets(link) {
       mainwidget = true;
     }
   });
-  /*
-    localStorage.setItem('weeklyWidgets', weeklytab.innerHTML);
-    localStorage.setItem('lastupdate', `${currdate.toDateString()} ${currdate.getHours()}`);
-    */
+
   console.log(
     `Updated Weekly Widgets ${currdate.toLocaleTimeString([], {
       hour: "2-digit",
