@@ -5,8 +5,135 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Weather App</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <link rel="stylesheet" href="style.css" />
     <script src="main.js" defer></script>
   </head>
-  <body></body>
+  <body>
+    <header id="weather-header">
+      <span id="curr-time">Time</span>
+      <form id="search-bar">
+        <input
+          type="text"
+          name="search-field"
+          id="search-field"
+          placeholder="Enter a Location"
+          autocomplete="off"
+        />
+        <button type="submit" id="search-btn"><i class="fas fa-search"></i></button>
+      </form>
+      <div id="unit-selector">
+        <button id="farenheit" class="selected">°F</button>
+        <span>/</span>
+        <button id="celsius">°C</button>
+      </div>
+    </header>
+
+    <div id="content">
+      <section id="curr-temp" class="container-style">
+        <img src="images/day_clear.png" alt="sunny weather image" class="weather-img" />
+        <div class="above">
+          <span class="temp">74°F</span>
+          <div class="weather-description">Clear</div>
+        </div>
+      </section>
+
+      <section id="location-info" class="container-style">
+        <h3 id="curr-location">New York City, New York</h3>
+        <section id="specifications">
+          <div id="chance-rain">
+            <i class="fas fa-tint fa-fw"></i>
+            <div class="curr-details">
+              <span>Chance of Rain</span>
+              <span class="value">0.05%</span>
+            </div>
+          </div>
+          <div id="humidity">
+            <img src="images/humidity.png" alt="humidity icon" class="icon-img" />
+            <div class="curr-details">
+              <span>Humidity</span>
+              <span class="value">10%</span>
+            </div>
+          </div>
+          <div id="wind-speed">
+            <i class="fas fa-wind fa-fw"></i>
+            <div class="curr-details">
+              <span>Wind Speed</span>
+              <span class="value">10mph</span>
+            </div>
+          </div>
+          <div id="visibility">
+            <i class="fas fa-smog fa-fw"></i>
+            <div class="curr-details">
+              <span>Visibility</span>
+              <span class="value">100km</span>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <div id="future-weather-btns">
+        <button id="hourly" class="selected">Hourly</button>
+        <button id="daily">Daily</button>
+      </div>
+
+      <div id="future-weather-information">
+        <div class="weather-card container-style">
+          <img src="images/day_clear.png" alt="sunny weather image" class="weather-img" />
+          <span class="time">Sunday</span>
+          <span class="precip">0%</span>
+          <span class="temp-hi">74°F</span>
+          <span class="temp-low">30°F</span>
+        </div>
+        <div class="weather-card container-style">
+          <img src="images/day_clear.png" alt="sunny weather image" class="weather-img" />
+          <span class="time">Monday</span>
+          <span class="precip">0%</span>
+          <span class="temp-hi">74°F</span>
+          <span class="temp-low">30°F</span>
+        </div>
+        <div class="weather-card container-style">
+          <img src="images/day_clear.png" alt="sunny weather image" class="weather-img" />
+          <span class="time">Tuesday</span>
+          <span class="precip">0%</span>
+          <span class="temp-hi">74°F</span>
+          <span class="temp-low">30°F</span>
+        </div>
+        <div class="weather-card container-style">
+          <img src="images/day_clear.png" alt="sunny weather image" class="weather-img" />
+          <span class="time">Wednesday</span>
+          <span class="precip">0%</span>
+          <span class="temp-hi">74°F</span>
+          <span class="temp-low">30°F</span>
+        </div>
+        <div class="weather-card container-style">
+          <img src="images/day_clear.png" alt="sunny weather image" class="weather-img" />
+          <span class="time">Thursday</span>
+          <span class="precip">0%</span>
+          <span class="temp-hi">74°F</span>
+          <span class="temp-low">30°F</span>
+        </div>
+        <div class="weather-card container-style">
+          <img src="images/day_clear.png" alt="sunny weather image" class="weather-img" />
+          <span class="time">Friday</span>
+          <span class="precip">0%</span>
+          <span class="temp-hi">74°F</span>
+          <span class="temp-low">30°F</span>
+        </div>
+        <div class="weather-card container-style">
+          <img src="images/day_clear.png" alt="sunny weather image" class="weather-img" />
+          <span class="time">Saturday</span>
+          <span class="precip">0%</span>
+          <span class="temp-hi">74°F</span>
+          <span class="temp-low">30°F</span>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
