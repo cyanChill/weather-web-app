@@ -1,48 +1,85 @@
+import { getUnixTime, fromUnixTime, format } from "date-fns";
+
+// Simply function to see if an inputed city contains only letters, spaces, or hythens
 function isValidCity(cityname) {
   const regex = /[a-z\-\s]/g;
   return regex.test(cityname);
 }
 
+// Organize and return coordinate values in an object
 function getCoords(weatherObj) {
-  return [weatherObj.coord.lon, weatherObj.coord.lat];
+  return { lon: weatherObj.coord.lon, lat: weatherObj.coord.lat };
 }
 
+// "Syntatic sugar"
 function getLocationName(weatherObj) {
   /* Only for weatherObj from the currentWeather API call */
   return weatherObj.name;
 }
 
-function filterData() {
-  /* 
-    Use date-fns functions to do the date comparison stuff
-    - Use it it filter out the information based on if it's after today
-    
-    - Or since the times are in unix time stamp, get our current unix time stamp and compare; returning the ones that are after 
-  */
-  return;
+// Checks if something is an object
+function isObject(obj) {
+  return Object.prototype.toString.call(obj) === "[object Object]";
 }
 
+// Returns an array of weather objects where the time their data is valid is after the current time
+function filterData(weatherObjs) {
+  const currUnix = getUnixTime(new Date());
+  // If we get a singular weather object instead of an array of weather objects
+  if (!Array.isArray(weatherObjs)) weatherObjs = [weatherObjs];
+
+  return weatherObjs.filter((weatherObj) => {
+    return weatherObj.dt > currUnix;
+  });
+}
+
+// Returns the necessary data in a format that's easy to use
 function reformateData(weatherObj) {
-  /* 
-    Input: Object from either "WEATHER_JSON.current" or on of the objects in the array of "WEATHER_JSON.hourly" or "WEATHER_JSON.daily"
-  */
-  /* 
-    Things we want to reformate / return [prob use Array.map]:
-    - Format "WEATHER_OBJ.dt" into the day (Monday, Tuesday, etc.) and the time (ie: 4:00 pm) [using date-fns]
-    - Temp from "WEATHER_OBJ.temp" [For CURRENT & HOURLY]
-    - Min & Max Temperature (be 2 different properties in our return object)
-      - Min Temp from "WEATHER_OBJ.temp.min"
-      - Max Temp from "WEATHER_OBJ.temp.max"
-      - IMPORTANT TO CHECK TO SEE IF "WEATHER_OBJ.temp" is an object before doing this
-    - Humidity from "WEATHER_OBJ.humidity"
-    - Dew point from "WEATHER_OBJ.dew_point"
-    - Wind speed from "WEATHER_OBJ.wind_speed"
-    - Visibility from "WEATHER_OBJ.visibility"
-    - Precipitation probability form "WEATHER_OBJ.pop"
-    - Weather information from "WEATHER_OBJ.weather"
+  const dateFromUnixTime = fromUnixTime(weatherObj.dt);
+  const tempIsObj = isObject(weatherObj.temp);
 
-  */
-  return;
+  return {
+    day: format(new Date(dateFromUnixTime), "EEEE"),
+    hour: format(new Date(dateFromUnixTime), "h':00' aaa"),
+    currTemp: !tempIsObj ? weatherObj.temp : weatherObj.temp.day,
+    minTemp: !tempIsObj ? weatherObj.temp : weatherObj.temp.min,
+    maxTemp: !tempIsObj ? weatherObj.temp : weatherObj.temp.max,
+    precipProb: weatherObj.pop || 0,
+    humidity: weatherObj.humidity,
+    windSpeed: weatherObj.wind_speed,
+    visibility: weatherObj.visibility,
+    weatherInfo: weatherObj.weather[0],
+  };
 }
 
-export { isValidCity, getCoords, getLocationName, filterData, reformateData };
+// Turn a string into title case
+function toTitleCase(str) {
+  return str
+    .toLowerCase()
+    .split(" ")
+    .map((word) => word.replace(word[0], word[0].toUpperCase()))
+    .join(" ");
+}
+
+// Get the correct units for the inputted value in relation to current page settings
+function getCorrectUnits(value, type) {
+  const currentUnit = localStorage.getItem('unit') || "F";
+  if (type === "temperature") {
+
+  } else if (type === "wind-speed") {
+
+  } else if (type === "visibility") {
+    
+  }
+  return value;
+}
+
+export {
+  isValidCity,
+  getCoords,
+  getLocationName,
+  filterData,
+  reformateData,
+  toTitleCase,
+  getCorrectUnits,
+};
