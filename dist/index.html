@@ -24,7 +24,7 @@
             type="text"
             name="search-field"
             id="search-field"
-            placeholder="Enter a Location"
+            placeholder="Enter a City"
             autocomplete="off"
           />
           <button type="submit" id="search-btn"><i class="fas fa-search"></i></button>
@@ -48,7 +48,7 @@
         </section>
 
         <section id="location-info" class="container-style">
-          <h3 id="curr-location">New York City, New York</h3>
+          <h3 id="curr-location">New York</h3>
           <section id="specifications">
             <div id="chance-rain">
               <i class="fas fa-tint fa-fw"></i>
@@ -82,59 +82,62 @@
         </section>
 
         <div id="future-weather-btns">
-          <button id="hourly" class="selected">Hourly</button>
-          <button id="daily">Daily</button>
+          <button id="hourly" class="">Hourly</button>
+          <button id="daily" class="selected">Daily</button>
         </div>
 
         <div id="future-weather-information">
-          <div class="weather-card container-style">
-            <img src="images/day_clear.png" alt="sunny weather image" class="weather-img" />
-            <p class="time">Sunday</p>
-            <p class="precip">0%</p>
-            <p class="temp-hi">74°F</p>
-            <p class="temp-low">30°F</p>
-          </div>
-          <div class="weather-card container-style">
-            <img src="images/day_clear.png" alt="sunny weather image" class="weather-img" />
-            <p class="time">Monday</p>
-            <p class="precip">0%</p>
-            <p class="temp-hi">74°F</p>
-            <p class="temp-low">30°F</p>
-          </div>
-          <div class="weather-card container-style">
-            <img src="images/day_clear.png" alt="sunny weather image" class="weather-img" />
-            <p class="time">Tuesday</p>
-            <p class="precip">0%</p>
-            <p class="temp-hi">74°F</p>
-            <p class="temp-low">30°F</p>
-          </div>
-          <div class="weather-card container-style">
-            <img src="images/day_clear.png" alt="sunny weather image" class="weather-img" />
-            <p class="time">Wednesday</p>
-            <p class="precip">0%</p>
-            <p class="temp-hi">74°F</p>
-            <p class="temp-low">30°F</p>
-          </div>
-          <div class="weather-card container-style">
-            <img src="images/day_clear.png" alt="sunny weather image" class="weather-img" />
-            <p class="time">Thursday</p>
-            <p class="precip">0%</p>
-            <p class="temp-hi">74°F</p>
-            <p class="temp-low">30°F</p>
-          </div>
-          <div class="weather-card container-style">
-            <img src="images/day_clear.png" alt="sunny weather image" class="weather-img" />
-            <p class="time">Friday</p>
-            <p class="precip">0%</p>
-            <p class="temp-hi">74°F</p>
-            <p class="temp-low">30°F</p>
-          </div>
-          <div class="weather-card container-style">
-            <img src="images/day_clear.png" alt="sunny weather image" class="weather-img" />
-            <p class="time">Saturday</p>
-            <p class="precip">0%</p>
-            <p class="temp-hi">74°F</p>
-            <p class="temp-low">30°F</p>
+          <div id="hourly-weather"></div>
+          <div id="daily-weather">
+            <div class="weather-card container-style">
+              <img src="images/day_clear.png" alt="sunny weather image" class="weather-img" />
+              <p class="time">Sunday</p>
+              <p class="precip">0%</p>
+              <p class="temp-hi">74°F</p>
+              <p class="temp-low">30°F</p>
+            </div>
+            <div class="weather-card container-style">
+              <img src="images/day_clear.png" alt="sunny weather image" class="weather-img" />
+              <p class="time">Monday</p>
+              <p class="precip">0%</p>
+              <p class="temp-hi">74°F</p>
+              <p class="temp-low">30°F</p>
+            </div>
+            <div class="weather-card container-style">
+              <img src="images/day_clear.png" alt="sunny weather image" class="weather-img" />
+              <p class="time">Tuesday</p>
+              <p class="precip">0%</p>
+              <p class="temp-hi">74°F</p>
+              <p class="temp-low">30°F</p>
+            </div>
+            <div class="weather-card container-style">
+              <img src="images/day_clear.png" alt="sunny weather image" class="weather-img" />
+              <p class="time">Wednesday</p>
+              <p class="precip">0%</p>
+              <p class="temp-hi">74°F</p>
+              <p class="temp-low">30°F</p>
+            </div>
+            <div class="weather-card container-style">
+              <img src="images/day_clear.png" alt="sunny weather image" class="weather-img" />
+              <p class="time">Thursday</p>
+              <p class="precip">0%</p>
+              <p class="temp-hi">74°F</p>
+              <p class="temp-low">30°F</p>
+            </div>
+            <div class="weather-card container-style">
+              <img src="images/day_clear.png" alt="sunny weather image" class="weather-img" />
+              <p class="time">Friday</p>
+              <p class="precip">0%</p>
+              <p class="temp-hi">74°F</p>
+              <p class="temp-low">30°F</p>
+            </div>
+            <div class="weather-card container-style">
+              <img src="images/day_clear.png" alt="sunny weather image" class="weather-img" />
+              <p class="time">Saturday</p>
+              <p class="precip">0%</p>
+              <p class="temp-hi">74°F</p>
+              <p class="temp-low">30°F</p>
+            </div>
           </div>
         </div>
       </div>

@@ -4,6 +4,7 @@
   display: flex;
   justify-content: center;
   gap: 1rem;
+  margin: 0.75rem !important;
 }
 
 #future-weather-btns button {
@@ -12,4 +13,10 @@
 
 #future-weather-btns .selected {
   border: 1px solid black;
+}
+
+@media (min-width: 700px) {
+  #future-weather-btns {
+    justify-content: flex-start;
+  }
 }
