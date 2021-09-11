@@ -1,5 +1,3 @@
-import { closestTo } from "date-fns";
-
 const toastModule = (function () {
   const toastLocation = document.getElementById("toast");
 

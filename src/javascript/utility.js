@@ -1,5 +1,37 @@
 import { getUnixTime, fromUnixTime, format } from "date-fns";
 
+// Checks if something is an object
+function isObject(obj) {
+  return Object.prototype.toString.call(obj) === "[object Object]";
+}
+
+// Turn a string into title case
+function toTitleCase(str) {
+  return str
+    .toLowerCase()
+    .split(" ")
+    .map((word) => word.replace(word[0], word[0].toUpperCase()))
+    .join(" ");
+}
+
+// Get the correct units for the inputted value in relation to current page settings
+function getCorrectUnitFormat(value, type) {
+  const currentUnit = localStorage.getItem("unit") || "F";
+  if (type === "temperature") {
+    if (currentUnit === "C") value = ((val - 32) * 5) / 9;
+    return `${Math.round(value)}°${currentUnit}`;
+  } else if (type === "wind-speed") {
+    if (currentUnit === "C") value = value * 1.609;
+    return `${value.toFixed(1)}${currentUnit === "F" ? "mph" : "km/h"}`;
+  } else if (type === "visibility") {
+    if (value < 1000) return `${value}m`;
+    else return `${Math.round(value / 1000)}km`;
+  } else if (type === "precipitation") {
+    return `${value * 100}%`;
+  }
+  return value;
+}
+
 // Simply function to see if an inputed city contains only letters, spaces, or hythens
 function isValidCity(cityname) {
   const regex = /[a-z\-\s]/g;
@@ -15,11 +47,6 @@ function getCoords(weatherObj) {
 function getLocationName(weatherObj) {
   /* Only for weatherObj from the currentWeather API call */
   return weatherObj.name;
-}
-
-// Checks if something is an object
-function isObject(obj) {
-  return Object.prototype.toString.call(obj) === "[object Object]";
 }
 
 // Returns an array of weather objects where the time their data is valid is after the current time
@@ -40,7 +67,7 @@ function reformateData(weatherObj) {
 
   return {
     day: format(new Date(dateFromUnixTime), "EEEE"),
-    hour: format(new Date(dateFromUnixTime), "h':00' aaa"),
+    hour: format(new Date(dateFromUnixTime), "h aaa"),
     currTemp: !tempIsObj ? weatherObj.temp : weatherObj.temp.day,
     minTemp: !tempIsObj ? weatherObj.temp : weatherObj.temp.min,
     maxTemp: !tempIsObj ? weatherObj.temp : weatherObj.temp.max,
@@ -52,28 +79,6 @@ function reformateData(weatherObj) {
   };
 }
 
-// Turn a string into title case
-function toTitleCase(str) {
-  return str
-    .toLowerCase()
-    .split(" ")
-    .map((word) => word.replace(word[0], word[0].toUpperCase()))
-    .join(" ");
-}
-
-// Get the correct units for the inputted value in relation to current page settings
-function getCorrectUnits(value, type) {
-  const currentUnit = localStorage.getItem('unit') || "F";
-  if (type === "temperature") {
-
-  } else if (type === "wind-speed") {
-
-  } else if (type === "visibility") {
-    
-  }
-  return value;
-}
-
 export {
   isValidCity,
   getCoords,
@@ -81,5 +86,5 @@ export {
   filterData,
   reformateData,
   toTitleCase,
-  getCorrectUnits,
+  getCorrectUnitFormat,
 };

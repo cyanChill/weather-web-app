@@ -1,12 +1,10 @@
 import { isValidCity, getCoords, getLocationName } from "./utility";
+import toastModule from "./toast";
 
 const COORD_FETCH_URL_BASE = "https://api.openweathermap.org/data/2.5/weather?q=";
 const URL_BASE = "https://api.openweathermap.org/data/2.5/onecall?";
-const EXCLUDE = "current,minutely,alerts";
-/* Free API key */
-const API_KEY = "4e9e9bd9d25c3c1ce6e7f62ea6284fc1";
-
-const UNITS = "imperial" | "metric"; // fahrenheit or celsius
+const EXCLUDE = "minutely,alerts";
+const API_KEY = process.env.API_KEY;
 
 async function getCurrWeather(city) {
   try {
@@ -18,42 +16,47 @@ async function getCurrWeather(city) {
 
     return data;
   } catch (err) {
-    console.log(err);
+    throw new Error("Invalid City");
   }
 }
 
-async function fetchWeather(coords) {
+async function fetchWeather(lon, lat) {
   try {
-    const [lon, lat] = coords;
-    const queryStr = `${URL_BASE}lat=${lat}&lon=${lon}&exclude=${EXCLUDE}&units=${UNITS}&appid=${API_KEY}`;
+    const queryStr = `${URL_BASE}lat=${lat}&lon=${lon}&exclude=${EXCLUDE}&units=imperial&appid=${API_KEY}`;
 
     const response = await fetch(queryStr);
     const data = await response.json();
 
-    return [data.hourly, data.daily];
+    return { current: data.current, hourly: data.hourly, daily: data.daily };
   } catch (err) {
-    console.log(err);
+    throw new Error("Failed To Fetch Weather Information");
   }
 }
 
-async function getWeatherInfoFor(cityName) {
+async function getWeatherInfoFor(cityName, config) {
   try {
     if (!isValidCity(cityName)) throw new Error("Invalid City");
 
     const currWeatherObj = await getCurrWeather(cityName);
-    const coords = getCoords(currWeatherObj);
+    const { lon, lat } = getCoords(currWeatherObj);
     const locationName = getLocationName(currWeatherObj);
 
-    const [daily, hourly] = await fetchWeather(coords);
+    if (!config.initialCall && locationName === localStorage.getItem("locationName")) {
+      throw new Error("Same Location");
+    }
+
+    const { current, hourly, daily } = await fetchWeather(lon, lat);
 
     return {
       location: locationName,
-      currentWeather: currWeatherObj,
+      currentWeather: current,
       hourlyWeather: hourly,
       dailyWeather: daily,
     };
   } catch (err) {
     console.log(err);
+    toastModule.displayToast(err, "error");
+    return undefined;
   }
 }
 

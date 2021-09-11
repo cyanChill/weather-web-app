@@ -1,4 +1,4 @@
-import { getCorrectUnits, toTitleCase } from "./utility";
+import { getCorrectUnitFormat, toTitleCase } from "./utility";
 
 function createWeatherCard(time, weatherObj) {
   const weatherCard = document.createElement("div");
@@ -16,19 +16,19 @@ function createWeatherCard(time, weatherObj) {
 
   const hourTempLabel = document.createElement("p");
   hourTempLabel.className = "hour-temp";
-  hourTempLabel.textContent = getCorrectUnits(weatherObj.currTemp, "temperature");
+  hourTempLabel.textContent = getCorrectUnitFormat(weatherObj.currTemp, "temperature");
 
   const tempHiLabel = document.createElement("p");
   tempHiLabel.classList = "temp-hi";
-  tempHiLabel.textContent = getCorrectUnits(weatherObj.maxTemp, "temperature");
+  tempHiLabel.textContent = getCorrectUnitFormat(weatherObj.maxTemp, "temperature");
 
   const tempLowLabel = document.createElement("p");
   tempLowLabel.classList = "temp-low";
-  tempLowLabel.textContent = getCorrectUnits(weatherObj.minTemp, "temperature");
+  tempLowLabel.textContent = getCorrectUnitFormat(weatherObj.minTemp, "temperature");
 
   const precipLabel = document.createElement("p");
   precipLabel.classList = "precip";
-  precipLabel.textContent = `${weatherObj.precipProb}%`;
+  precipLabel.textContent = getCorrectUnitFormat(weatherObj.precipProb, "precipitation");
 
   weatherCard.appendChild(timeLabel);
   weatherCard.appendChild(cardImg);
