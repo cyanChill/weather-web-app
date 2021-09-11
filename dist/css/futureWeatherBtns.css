@@ -1,0 +1,15 @@
+/* Future Weather Buttons (Hourly/Daily) */
+#future-weather-btns {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+#future-weather-btns button {
+  padding: 0.5rem 1rem;
+}
+
+#future-weather-btns .selected {
+  border: 1px solid black;
+}

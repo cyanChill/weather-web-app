@@ -1,0 +1,33 @@
+/* Current Temperature Widget */
+#curr-temp {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  position: relative;
+}
+
+#curr-temp .weather-img {
+  width: clamp(5rem, 25vw, 12.5rem);
+  z-index: -1; /* Put behind background */
+}
+
+.above {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+}
+
+#curr-temp .temp {
+  font-weight: bold;
+  font-size: clamp(2.5rem, 9vw, 5rem);
+}
+
+#curr-temp .weather-description {
+  font-size: clamp(2rem, 5vw, 3rem);
+}

@@ -1,0 +1,56 @@
+/* Header Bar */
+#weather-header {
+  display: flex;
+  justify-content: center;
+  padding: 0.75rem 0.5rem;
+  background: var(--transparent-header);
+}
+
+#weather-header .container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#curr-time {
+  display: none;
+  font-size: clamp(1.25rem, 3vw, 2rem);
+  font-weight: bold;
+}
+
+#search-bar {
+  border-radius: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  background: white;
+}
+
+#search-field {
+  width: clamp(7rem, 50vw, 15rem);
+}
+
+#search-field,
+#search-btn {
+  font-size: clamp(0.9rem, 3vw, 1rem);
+}
+
+#unit-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: clamp(1.25rem, 3vw, 2rem);
+}
+
+#unit-selector button {
+  font-size: clamp(1rem, 3vw, 1.75rem);
+}
+
+#unit-selector .selected {
+  font-weight: bold;
+}
+
+@media (min-width: 480px) {
+  #curr-time {
+    display: block;
+  }
+}

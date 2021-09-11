@@ -1,0 +1,59 @@
+/* Current Location Info */
+#location-info {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#curr-location {
+  text-align: center;
+  padding: 0.5rem;
+  font-size: clamp(1.25rem, 4vw, 3rem);
+}
+
+#specifications {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.5rem, 1vw, 1rem);
+}
+
+#specifications > * {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+}
+
+.curr-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.curr-details p:not(.value) {
+  font-weight: bold;
+  font-size: clamp(1rem, 3vw, 1.5rem);
+}
+
+.curr-details p.value {
+  font-size: clamp(0.9rem, 2.5vw, 1.25rem);
+}
+
+.icon-img {
+  width: 1rem;
+}
+
+@media (min-width: 480px) {
+  #location-info {
+    align-items: flex-start;
+  }
+
+  #curr-location {
+    text-align: left;
+  }
+
+  #specifications {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
