@@ -1,9 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Lato&display=swap");
 @import url("css/header.css");
+@import url("css/toast.css");
 @import url("css/currTempWidget.css");
 @import url("css/currLocInfo.css");
 @import url("css/futureWeatherBtns.css");
 @import url("css/weatherCard.css");
+@import url("css/footer.css");
 
 :root {
   --transparent-header: rgba(224, 224, 224, 0.62);
@@ -49,8 +51,11 @@
 
 body {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   background: var(--bkg-main);
   font-family: "Lato", sans-serif;
+  user-select: none;
 }
 
 input,
@@ -60,6 +65,15 @@ button {
   background: transparent;
   border: 1px solid transparent;
   border-radius: 0.5rem;
+  cursor: auto;
+}
+
+button {
+  cursor: pointer;
+}
+
+.hidden {
+  display: none !important;
 }
 
 /* General styling for the containers */
@@ -78,10 +92,12 @@ button {
 
 /* Main Content Container */
 #content {
+  flex: 1;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 }
 
 #content .container {

@@ -6,8 +6,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
   position: relative;
+  text-align: center;
 }
 
 #curr-temp .weather-img {
@@ -21,13 +21,14 @@
   justify-content: center;
   align-items: center;
   position: absolute;
+  padding: 0.25rem;
 }
 
 #curr-temp .temp {
   font-weight: bold;
-  font-size: clamp(2.5rem, 9vw, 5rem);
+  font-size: clamp(2.25rem, 7vw, 4rem);
 }
 
 #curr-temp .weather-description {
-  font-size: clamp(2rem, 5vw, 3rem);
+  font-size: clamp(1.15rem, 3vw, 2.75rem);
 }

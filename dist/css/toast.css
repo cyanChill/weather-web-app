@@ -60,6 +60,6 @@
 
 @media (min-width: 480px) {
   #toast {
-    width: min(100%, 60rem);
+    width: min(100%, 45rem);
   }
 }
