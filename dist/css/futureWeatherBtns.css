@@ -8,11 +8,13 @@
 }
 
 #future-weather-btns button {
+  font-size: 1rem;
   padding: 0.5rem 1rem;
 }
 
-#future-weather-btns .selected {
-  border: 1px solid black;
+#future-weather-btns button.selected {
+  font-weight: bold;
+  border: 2px solid black;
 }
 
 @media (min-width: 700px) {

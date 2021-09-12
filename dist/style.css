@@ -72,6 +72,10 @@ button {
   cursor: pointer;
 }
 
+img {
+  pointer-events: none;
+}
+
 .hidden {
   display: none !important;
 }
@@ -105,6 +109,12 @@ button {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+/* Just for the grab cursor */
+#daily-weather,
+#hourly-weather {
+  cursor: grab;
 }
 
 @media (min-width: 700px) {

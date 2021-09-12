@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Weather App</title>
+    <link rel="shortcut icon" href="images/01d.png" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
@@ -18,7 +19,7 @@
   <body>
     <header id="weather-header">
       <div class="container">
-        <p id="curr-time">4:00 pm</p>
+        <p id="curr-time"></p>
         <form id="search-bar">
           <input
             type="text"
@@ -30,7 +31,7 @@
           <button type="submit" id="search-btn"><i class="fas fa-search"></i></button>
         </form>
         <div id="unit-selector">
-          <button id="farenheit" class="selected">°F</button>
+          <button id="fahrenheit" class="selected">°F</button>
           <p>/</p>
           <button id="celsius">°C</button>
         </div>
@@ -38,109 +39,68 @@
     </header>
 
     <div id="content">
+      <div id="toast"></div>
       <div class="container">
         <section id="curr-temp" class="container-style">
-          <img src="images/day_clear.png" alt="sunny weather image" class="weather-img" />
+          <img src="" alt="weather image" class="weather-img" />
           <div class="above">
-            <p class="temp">74°F</p>
-            <div class="weather-description">Clear</div>
+            <p class="temp"></p>
+            <div class="weather-description"></div>
           </div>
         </section>
 
         <section id="location-info" class="container-style">
-          <h3 id="curr-location">New York</h3>
+          <h3 id="curr-location"></h3>
           <section id="specifications">
             <div id="chance-rain">
               <i class="fas fa-tint fa-fw"></i>
               <div class="curr-details">
                 <p>Chance of Rain</p>
-                <p class="value">0.05%</p>
+                <p class="value"></p>
               </div>
             </div>
             <div id="humidity">
               <img src="images/humidity.png" alt="humidity icon" class="icon-img" />
               <div class="curr-details">
                 <p>Humidity</p>
-                <p class="value">10%</p>
+                <p class="value"></p>
               </div>
             </div>
             <div id="wind-speed">
               <i class="fas fa-wind fa-fw"></i>
               <div class="curr-details">
                 <p>Wind Speed</p>
-                <p class="value">10mph</p>
+                <p class="value"></p>
               </div>
             </div>
             <div id="visibility">
               <i class="fas fa-smog fa-fw"></i>
               <div class="curr-details">
                 <p>Visibility</p>
-                <p class="value">100km</p>
+                <p class="value"></p>
               </div>
             </div>
           </section>
         </section>
 
         <div id="future-weather-btns">
-          <button id="hourly" class="">Hourly</button>
-          <button id="daily" class="selected">Daily</button>
+          <button id="hourly" class="selected">Hourly</button>
+          <button id="daily" class="">Daily</button>
         </div>
 
         <div id="future-weather-information">
-          <div id="hourly-weather"></div>
-          <div id="daily-weather">
-            <div class="weather-card container-style">
-              <img src="images/day_clear.png" alt="sunny weather image" class="weather-img" />
-              <p class="time">Sunday</p>
-              <p class="precip">0%</p>
-              <p class="temp-hi">74°F</p>
-              <p class="temp-low">30°F</p>
-            </div>
-            <div class="weather-card container-style">
-              <img src="images/day_clear.png" alt="sunny weather image" class="weather-img" />
-              <p class="time">Monday</p>
-              <p class="precip">0%</p>
-              <p class="temp-hi">74°F</p>
-              <p class="temp-low">30°F</p>
-            </div>
-            <div class="weather-card container-style">
-              <img src="images/day_clear.png" alt="sunny weather image" class="weather-img" />
-              <p class="time">Tuesday</p>
-              <p class="precip">0%</p>
-              <p class="temp-hi">74°F</p>
-              <p class="temp-low">30°F</p>
-            </div>
-            <div class="weather-card container-style">
-              <img src="images/day_clear.png" alt="sunny weather image" class="weather-img" />
-              <p class="time">Wednesday</p>
-              <p class="precip">0%</p>
-              <p class="temp-hi">74°F</p>
-              <p class="temp-low">30°F</p>
-            </div>
-            <div class="weather-card container-style">
-              <img src="images/day_clear.png" alt="sunny weather image" class="weather-img" />
-              <p class="time">Thursday</p>
-              <p class="precip">0%</p>
-              <p class="temp-hi">74°F</p>
-              <p class="temp-low">30°F</p>
-            </div>
-            <div class="weather-card container-style">
-              <img src="images/day_clear.png" alt="sunny weather image" class="weather-img" />
-              <p class="time">Friday</p>
-              <p class="precip">0%</p>
-              <p class="temp-hi">74°F</p>
-              <p class="temp-low">30°F</p>
-            </div>
-            <div class="weather-card container-style">
-              <img src="images/day_clear.png" alt="sunny weather image" class="weather-img" />
-              <p class="time">Saturday</p>
-              <p class="precip">0%</p>
-              <p class="temp-hi">74°F</p>
-              <p class="temp-low">30°F</p>
-            </div>
-          </div>
+          <div id="hourly-weather" class=""></div>
+          <div id="daily-weather" class="hidden"></div>
         </div>
       </div>
     </div>
+
+    <footer id="citations">
+      Humidity icon made by
+      <a href="https://www.flaticon.com/authors/kirill-kazachek" title="Kirill Kazachek"
+        >Kirill Kazachek</a
+      >
+      from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
+    </footer>
   </body>
 </html>
