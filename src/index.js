@@ -1,22 +1,33 @@
-/* Section for hourly */
+/* For the sake of initializing the event listeners */
+import forecastControlBtn from "./javascript/futureWeatherBtns";
+import dragScrolling from "./javascript/dragScroll";
+import units from "./javascript/unitButtons";
+import pageTimer from "./javascript/pageTime";
 
-/* Section for 7-day */
+import { updatePageContents } from "./javascript/pageUpdate";
+import { updateSessionCache } from "./javascript/utility";
+let location = localStorage.getItem("locationName") || "new york";
 
-/* 
-    Icon attribute 
-    <div>Icons made by <a href="https://www.flaticon.com/authors/kirill-kazachek" title="Kirill Kazachek">Kirill Kazachek</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
-*/
-
-import { getWeatherInfoFor } from "./javascript/apiFetch";
-
+// Initialization
 (async function () {
-  const recievedInfo = await getWeatherInfoFor("new york");
+  units.showSelectedUnit();
+  pageTimer.intialize();
 
-  console.log(recievedInfo);
+  updatePageContents(location, { initialCall: true }).then((data) =>
+    updateSessionCache("cachedInfo", data)
+  );
 })();
 
-/* 
-    Listen to form submit 
-    - Pass query to "fetchWeather"
-    - From that, do manipulation to get correct info on hourly and daily weather
-*/
+/* Form Submission */
+const searchForm = document.getElementById("search-bar");
+searchForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  location = e.target["search-field"].value;
+
+  const newRecievedInfo = updatePageContents(location);
+  e.target.reset();
+
+  if (newRecievedInfo) {
+    updateSessionCache("cachedInfo", newRecievedInfo);
+  }
+});

@@ -29,7 +29,7 @@ async function fetchWeather(lon, lat) {
     const response = await fetch(queryStr);
     const data = await response.json();
 
-    if (data.cod === "404") throw Error;
+    if (data.cod) throw Error;
 
     return { current: data.current, hourly: data.hourly, daily: data.daily };
   } catch (err) {

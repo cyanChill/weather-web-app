@@ -45,6 +45,11 @@ function getCorrectUnitFormat(value, type, fromAPI = false) {
   }
 }
 
+// Updates the session cache of an item
+function updateSessionCache(key, value) {
+  sessionStorage.setItem(key, JSON.stringify(value));
+}
+
 // Simply function to see if an inputed city contains only letters, spaces, or hythens
 function isValidCity(cityname) {
   const regex = /[a-z\-\s]/g;
@@ -96,8 +101,10 @@ export {
   isValidCity,
   getCoords,
   getLocationName,
+  isObject,
   filterData,
   reformateData,
   toTitleCase,
   getCorrectUnitFormat,
+  updateSessionCache,
 };
