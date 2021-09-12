@@ -31,12 +31,10 @@ const units = (function () {
 
   async function updateDOMUnits() {
     const windSpeedSec = document.querySelector("#wind-speed .value");
-    const windSpeedVal = +windSpeedSec.textContent.match(/\d+\.?\d*/)[0];
-    windSpeedSec.textContent = getCorrectUnitFormat(windSpeedVal, "wind-speed");
+    windSpeedSec.textContent = getCorrectUnitFormat(windSpeedSec.textContent, "wind-speed");
 
     const tempSec = document.querySelector("#curr-temp .temp");
-    const tempVal = +tempSec.textContent.split("°")[0];
-    tempSec.textContent = getCorrectUnitFormat(tempVal, "temperature");
+    tempSec.textContent = getCorrectUnitFormat(tempSec.textContent, "temperature");
 
     const hourTempeartures = document.querySelectorAll(".hour-temp");
     const lowTempeartures = document.querySelectorAll(".temp-low");
@@ -50,8 +48,7 @@ const units = (function () {
 
     tempItemNodesGroups.forEach((tempType) => {
       tempType.forEach((temp) => {
-        const val = +temp.textContent.split("°")[0];
-        temp.textContent = getCorrectUnitFormat(val, "temperature");
+        temp.textContent = getCorrectUnitFormat(temp.textContent, "temperature");
       });
     });
   }

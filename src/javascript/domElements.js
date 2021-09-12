@@ -26,12 +26,12 @@ const visibilityVal = locationInfoSec.querySelector("#visibility .value");
 
 function fillLocationInfo(location, weatherObj) {
   /* windSpeed depend on whether we're in imperial or metric systems */
-  const windSpeed = getCorrectUnitFormat(weatherObj.windSpeed, "wind-speed", true);
+  const windSpeed = getCorrectUnitFormat(weatherObj.windSpeed, "wind-speed");
   /* Need to reduce visibility from meters/sec */
-  const visibility = getCorrectUnitFormat(weatherObj.visibility, "visibility", true);
+  const visibility = getCorrectUnitFormat(weatherObj.visibility, "visibility");
 
   locationName.textContent = toTitleCase(location);
-  rainChanceVal.textContent = getCorrectUnitFormat(weatherObj.precipProb, "precipitation", true);
+  rainChanceVal.textContent = getCorrectUnitFormat(weatherObj.precipProb, "precipitation");
   humidityVal.textContent = `${weatherObj.humidity}%`;
   windSpeedVal.textContent = windSpeed;
   visibilityVal.textContent = visibility;

@@ -5,42 +5,49 @@ import { getWeatherInfoFor } from "./apiFetch";
 import { isObject, filterData, reformateData } from "./utility";
 import { fillCurrTemp, fillLocationInfo, setDailyWidgets, setHourlyWidgets } from "./domElements";
 
-async function updatePageContents(locationName, config) {
-  const rtnedInfo = await compareWithCache(locationName);
-  if (!rtnedInfo) return;
+async function updatePageContents(locationName, config = { initialCall: false }) {
+  try {
+    const rtnedInfo = await compareWithCache(locationName, config);
 
-  const {
-    location,
-    currentWeather,
-    filteredHourly,
-    filteredDaily,
-    formatedCurrent,
-    formatedHourly,
-    formatedDaily,
-  } = rtnedInfo;
+    if (!rtnedInfo) return;
 
-  fillCurrTemp(formatedCurrent);
-  fillLocationInfo(location, formatedCurrent);
+    const {
+      location,
+      currentWeather,
+      filteredHourly,
+      filteredDaily,
+      formatedCurrent,
+      formatedHourly,
+      formatedDaily,
+    } = rtnedInfo;
 
-  setHourlyWidgets(formatedHourly);
-  setDailyWidgets(formatedDaily);
+    fillCurrTemp(formatedCurrent);
+    fillLocationInfo(location, formatedCurrent);
 
-  localStorage.setItem("locationName", location);
+    setHourlyWidgets(formatedHourly);
+    setDailyWidgets(formatedDaily);
 
-  if (!config.initialCall) {
-    const msg = `Now displaying weather information for ${location}.`;
-    toastModule.displayToast(msg, "success");
+    localStorage.setItem("locationName", location);
+
+    if (!config.initialCall) {
+      const msg = `Now displaying weather information for ${location}.`;
+      toastModule.displayToast(msg, "success");
+    }
+
+    return {
+      location,
+      currentWeather,
+      hourlyWeather: filteredHourly,
+      dailyWeather: filteredDaily,
+    };
+  } catch (err) {
+    console.log(err);
+    toastModule.displayToast(err, "error");
+    return undefined;
   }
-
-  return {
-    location,
-    currentWeather,
-    hourlyWeather: filteredHourly,
-    dailyWeather: filteredDaily,
-  };
 }
 
-async function compareWithCache(locationName) {
+async function compareWithCache(locationName, config) {
   // Cached data
   let cachedInfo;
   try {
@@ -50,6 +57,7 @@ async function compareWithCache(locationName) {
   }
 
   if (
+    config.newLocation ||
     !cachedInfo ||
     (isObject(cachedInfo) && Object.keys(cachedInfo).length === 0) ||
     !cachedInfo.location ||
@@ -58,28 +66,33 @@ async function compareWithCache(locationName) {
     !cachedInfo.dailyWeather ||
     getUnixTime(new Date()) - cachedInfo.currentWeather.dt > 10800000
   ) {
-    const recievedInfo = await getWeatherInfoFor(locationName, { initialCall: true });
+    console.log("Fetching new data");
 
-    if (!recievedInfo) throw "Missing Data";
+    const recievedInfo = await getWeatherInfoFor(locationName, config);
+
+    const filteredHourly = filterData(recievedInfo.hourlyWeather);
+    const filteredDaily = filterData(recievedInfo.dailyWeather);
 
     return {
       location: recievedInfo.location,
       currentWeather: recievedInfo.currentWeather,
-      filteredHourly: filterData(recievedInfo.hourlyWeather),
-      filteredDaily: filterData(recievedInfo.dailyWeather),
+      filteredHourly,
+      filteredDaily,
       formatedCurrent: reformateData(recievedInfo.currentWeather),
       formatedHourly: filteredHourly.map((data) => reformateData(data)),
       formatedDaily: filteredDaily.map((data) => reformateData(data)),
     };
   } else {
+    console.log("Using Cached Data");
+
     return {
       location: cachedInfo.location,
       currentWeather: cachedInfo.currentWeather,
-      filteredHourly: hourlyWeather,
-      filteredDaily: dailyWeather,
+      filteredHourly: cachedInfo.hourlyWeather,
+      filteredDaily: cachedInfo.dailyWeather,
       formatedCurrent: reformateData(cachedInfo.currentWeather),
-      formatedHourly: hourlyWeather.map((data) => reformateData(data)),
-      formatedDaily: dailyWeather.map((data) => reformateData(data)),
+      formatedHourly: cachedInfo.hourlyWeather.map((data) => reformateData(data)),
+      formatedDaily: cachedInfo.dailyWeather.map((data) => reformateData(data)),
     };
   }
 }

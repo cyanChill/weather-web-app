@@ -9,7 +9,7 @@ const toastModule = (function () {
 
     if (msg.toLowerCase().includes("error")) msg = msg.split("Error: ")[1];
 
-    toast.classList = `toast ${type === "error" ? "error" : type === "success" ? "sucess" : ""}`;
+    toast.classList = `toast ${type === "error" ? "error" : type === "success" ? "success" : ""}`;
     toastType.classList = "toast-type";
     toastMsg.classList = "toast-msg";
     closeToast.classList = "remove-toast";

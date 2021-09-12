@@ -1,5 +1,4 @@
 import { isValidCity, getCoords, getLocationName } from "./utility";
-import toastModule from "./toast";
 
 const COORD_FETCH_URL_BASE = "https://api.openweathermap.org/data/2.5/weather?q=";
 const URL_BASE = "https://api.openweathermap.org/data/2.5/onecall?";
@@ -44,8 +43,9 @@ async function getWeatherInfoFor(cityName, config) {
     const currWeatherObj = await getCurrWeather(cityName);
     const { lon, lat } = getCoords(currWeatherObj);
     const locationName = getLocationName(currWeatherObj);
+
     if (!config.initialCall && locationName === localStorage.getItem("locationName")) {
-      throw "Same Location";
+      throw "Searching Weather For The Same Location";
     }
 
     const { current, hourly, daily } = await fetchWeather(lon, lat);
@@ -57,9 +57,7 @@ async function getWeatherInfoFor(cityName, config) {
       dailyWeather: daily,
     };
   } catch (err) {
-    console.log(err);
-    toastModule.displayToast(err, "error");
-    return undefined;
+    throw err;
   }
 }
 

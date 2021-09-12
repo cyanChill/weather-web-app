@@ -60,6 +60,7 @@ const pageTimer = (function () {
   }
 
   function hourlyUpdate() {
+    console.log("Hourly Update From Cache");
     if (hourlyInterval.count % 3 < 2) {
       const recievedInfo = JSON.parse(sessionStorage.getItem("cachedInfo"));
 
@@ -81,6 +82,7 @@ const pageTimer = (function () {
 
   function triHourlyUpdate() {
     updateInterval = setInterval(async () => {
+      console.log("Tri-Hourly Update From Servers");
       const location = localStorage.getItem("locationName");
       updatePageContents(location, { initialCall: true }).then((data) =>
         updateSessionCache("cachedInfo", data)
