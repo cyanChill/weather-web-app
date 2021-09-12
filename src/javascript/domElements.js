@@ -41,7 +41,7 @@ const hourlyWeatherSec = document.getElementById("hourly-weather");
 const dailyWeatherSec = document.getElementById("daily-weather");
 
 function setHourlyWidgets(weatherObjs) {
-  const limitWidgets = weatherObjs.slice(23);
+  const limitWidgets = weatherObjs.slice(0, 23);
   const widgets = getWidgets("hour", limitWidgets);
   hourlyWeatherSec.textContent = "";
   widgets.forEach((widget) => hourlyWeatherSec.appendChild(widget));

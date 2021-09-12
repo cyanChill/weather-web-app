@@ -57,7 +57,7 @@ async function compareWithCache(locationName, config) {
   }
 
   if (
-    config.newLocation ||
+    config.forceUpdate ||
     !cachedInfo ||
     (isObject(cachedInfo) && Object.keys(cachedInfo).length === 0) ||
     !cachedInfo.location ||

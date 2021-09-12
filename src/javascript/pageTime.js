@@ -5,13 +5,13 @@
     - Refreshes all the data on the page every 3 hours
 */
 
-import { format, getSeconds, getUnixTime, endOfHour } from "date-fns";
+import { format, getSeconds, getUnixTime, endOfHour, isToday, fromUnixTime } from "date-fns";
 import { fillCurrTemp, fillLocationInfo } from "./domElements";
 import { reformateData, updateSessionCache } from "./utility";
+import { updatePageContents } from "./pageUpdate";
 
 // We can only have 1 of each interval type going at once using this module
 let clockInterval;
-let updateInterval;
 let hourlyInterval = {
   count: 0,
   interval: "",
@@ -28,12 +28,10 @@ const pageTimer = (function () {
     calibrateClock();
 
     calibrateHourlyUpdate();
-    triHourlyUpdate();
   }
 
   function clearAllIntervals() {
     clearInterval(clockInterval);
-    clearInterval(updateInterval);
     clearInterval(hourlyInterval.interval);
   }
 
@@ -60,15 +58,18 @@ const pageTimer = (function () {
   }
 
   function hourlyUpdate() {
-    console.log("Hourly Update From Cache");
-    if (hourlyInterval.count % 3 < 2) {
-      const recievedInfo = JSON.parse(sessionStorage.getItem("cachedInfo"));
+    const recievedInfo = JSON.parse(sessionStorage.getItem("cachedInfo"));
+
+    const isNewDay = !isToday(new Date(fromUnixTime(recievedInfo.currentWeather.dt)));
+
+    if (hourlyInterval.count % 3 < 2 && !isNewDay) {
+      console.log("Hourly Update From Cache");
 
       const currHourInfo = recievedInfo.hourlyWeather[0];
       const formatedData = reformateData(currHourInfo);
 
       fillCurrTemp(formatedData);
-      fillLocationInfo(recievedInfo.location, formatedData);
+      fillLocationInfo(localStorage.getItem("locationName"), formatedData);
 
       hourlyWeatherInfo.firstChild.remove();
       hourlyInterval.count++;
@@ -77,17 +78,13 @@ const pageTimer = (function () {
       updateSessionCache("cachedInfo", recievedInfo);
     } else {
       hourlyInterval.count = 0;
-    }
-  }
 
-  function triHourlyUpdate() {
-    updateInterval = setInterval(async () => {
       console.log("Tri-Hourly Update From Servers");
       const location = localStorage.getItem("locationName");
-      updatePageContents(location, { initialCall: true }).then((data) =>
+      updatePageContents(location, { initialCall: true, forceUpdate: true }).then((data) =>
         updateSessionCache("cachedInfo", data)
       );
-    }, 10800000);
+    }
   }
 
   return { intialize };
