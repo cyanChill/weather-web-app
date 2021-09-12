@@ -29,7 +29,11 @@ async function updatePageContents(location, config) {
     toastModule.displayToast(msg, "success");
   }
 
-  return recievedInfo;
+  return {
+    ...recievedInfo,
+    hourlyWeather: filteredHourly,
+    dailyWeather: filteredDaily,
+  };
 }
 
 export { updatePageContents };

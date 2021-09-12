@@ -15,21 +15,34 @@ function toTitleCase(str) {
 }
 
 // Get the correct units for the inputted value in relation to current page settings
-function getCorrectUnitFormat(value, type) {
+function getCorrectUnitFormat(value, type, fromAPI = false) {
   const currentUnit = localStorage.getItem("unit") || "F";
-  if (type === "temperature") {
-    if (currentUnit === "C") value = ((val - 32) * 5) / 9;
-    return `${Math.round(value)}°${currentUnit}`;
-  } else if (type === "wind-speed") {
-    if (currentUnit === "C") value = value * 1.609;
-    return `${value.toFixed(1)}${currentUnit === "F" ? "mph" : "km/h"}`;
-  } else if (type === "visibility") {
-    if (value < 1000) return `${value}m`;
-    else return `${Math.round(value / 1000)}km`;
-  } else if (type === "precipitation") {
-    return `${value * 100}%`;
+  switch (type) {
+    case "temperature":
+      if (currentUnit === "C") {
+        value = ((value - 32) * 5) / 9;
+      } else if (!fromAPI) {
+        value = (value * 9) / 5 + 32;
+      }
+      return `${Math.round(value)}°${currentUnit}`;
+    case "wind-speed":
+      if (currentUnit === "C") {
+        value = value * 1.609;
+      } else if (!fromAPI) {
+        value = value / 1.609;
+      }
+      return `${value.toFixed(1)}${currentUnit === "F" ? "mph" : "km/h"}`;
+    case "visibility":
+      if (value < 1000) {
+        return `${value}m`;
+      } else {
+        return `${Math.round(value / 1000)}km`;
+      }
+    case "precipitation":
+      return `${value * 100}%`;
+    default:
+      return value;
   }
-  return value;
 }
 
 // Simply function to see if an inputed city contains only letters, spaces, or hythens

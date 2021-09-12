@@ -16,19 +16,19 @@ function createWeatherCard(time, weatherObj) {
 
   const hourTempLabel = document.createElement("p");
   hourTempLabel.className = "hour-temp";
-  hourTempLabel.textContent = getCorrectUnitFormat(weatherObj.currTemp, "temperature");
+  hourTempLabel.textContent = getCorrectUnitFormat(weatherObj.currTemp, "temperature", true);
 
   const tempHiLabel = document.createElement("p");
   tempHiLabel.classList = "temp-hi";
-  tempHiLabel.textContent = getCorrectUnitFormat(weatherObj.maxTemp, "temperature");
+  tempHiLabel.textContent = getCorrectUnitFormat(weatherObj.maxTemp, "temperature", true);
 
   const tempLowLabel = document.createElement("p");
   tempLowLabel.classList = "temp-low";
-  tempLowLabel.textContent = getCorrectUnitFormat(weatherObj.minTemp, "temperature");
+  tempLowLabel.textContent = getCorrectUnitFormat(weatherObj.minTemp, "temperature", true);
 
   const precipLabel = document.createElement("p");
   precipLabel.classList = "precip";
-  precipLabel.textContent = getCorrectUnitFormat(weatherObj.precipProb, "precipitation");
+  precipLabel.textContent = getCorrectUnitFormat(weatherObj.precipProb, "precipitation", true);
 
   weatherCard.appendChild(timeLabel);
   weatherCard.appendChild(cardImg);

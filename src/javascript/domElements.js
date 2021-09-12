@@ -26,12 +26,12 @@ const visibilityVal = locationInfoSec.querySelector("#visibility .value");
 
 function fillLocationInfo(location, weatherObj) {
   /* windSpeed depend on whether we're in imperial or metric systems */
-  const windSpeed = getCorrectUnitFormat(weatherObj.windSpeed, "wind-speed");
+  const windSpeed = getCorrectUnitFormat(weatherObj.windSpeed, "wind-speed", true);
   /* Need to reduce visibility from meters/sec */
-  const visibility = getCorrectUnitFormat(weatherObj.visibility, "visibility");
+  const visibility = getCorrectUnitFormat(weatherObj.visibility, "visibility", true);
 
   locationName.textContent = toTitleCase(location);
-  rainChanceVal.textContent = getCorrectUnitFormat(weatherObj.precipProb, "precipitation");
+  rainChanceVal.textContent = getCorrectUnitFormat(weatherObj.precipProb, "precipitation", true);
   humidityVal.textContent = `${weatherObj.humidity}%`;
   windSpeedVal.textContent = windSpeed;
   visibilityVal.textContent = visibility;
@@ -41,7 +41,8 @@ const hourlyWeatherSec = document.getElementById("hourly-weather");
 const dailyWeatherSec = document.getElementById("daily-weather");
 
 function setHourlyWidgets(weatherObjs) {
-  const widgets = getWidgets("hour", weatherObjs);
+  const limitWidgets = weatherObjs.slice(23);
+  const widgets = getWidgets("hour", limitWidgets);
   hourlyWeatherSec.textContent = "";
   widgets.forEach((widget) => hourlyWeatherSec.appendChild(widget));
 }

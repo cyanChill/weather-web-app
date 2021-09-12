@@ -14,9 +14,11 @@ async function getCurrWeather(city) {
     const response = await fetch(queryStr);
     const data = await response.json();
 
+    if (data.cod === "404") throw Error;
+
     return data;
   } catch (err) {
-    throw new Error("Invalid City");
+    throw "Invalid City";
   }
 }
 
@@ -27,9 +29,11 @@ async function fetchWeather(lon, lat) {
     const response = await fetch(queryStr);
     const data = await response.json();
 
+    if (data.cod === "404") throw Error;
+
     return { current: data.current, hourly: data.hourly, daily: data.daily };
   } catch (err) {
-    throw new Error("Failed To Fetch Weather Information");
+    throw "Failed To Fetch Weather Information";
   }
 }
 
@@ -40,9 +44,8 @@ async function getWeatherInfoFor(cityName, config) {
     const currWeatherObj = await getCurrWeather(cityName);
     const { lon, lat } = getCoords(currWeatherObj);
     const locationName = getLocationName(currWeatherObj);
-
     if (!config.initialCall && locationName === localStorage.getItem("locationName")) {
-      throw new Error("Same Location");
+      throw "Same Location";
     }
 
     const { current, hourly, daily } = await fetchWeather(lon, lat);

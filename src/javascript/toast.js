@@ -7,6 +7,8 @@ const toastModule = (function () {
     const toastMsg = document.createElement("span");
     const closeToast = document.createElement("span");
 
+    if (msg.toLowerCase().includes("error")) msg = msg.split("Error: ")[1];
+
     toast.classList = `toast ${type === "error" ? "error" : type === "success" ? "sucess" : ""}`;
     toastType.classList = "toast-type";
     toastMsg.classList = "toast-msg";
