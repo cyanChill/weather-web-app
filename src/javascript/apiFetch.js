@@ -1,4 +1,4 @@
-import { isValidCity, getCoords, getLocationName } from "./utility";
+import { isValidCity, getCoords, getLocationName, filterData, reformateData } from "./utility";
 
 const COORD_FETCH_URL_BASE = "https://api.openweathermap.org/data/2.5/weather?q=";
 const URL_BASE = "https://api.openweathermap.org/data/2.5/onecall?";
@@ -36,6 +36,7 @@ async function fetchWeather(lon, lat) {
   }
 }
 
+/* Returns an object containing the filtered and formated data */
 async function getWeatherInfoFor(cityName, config) {
   try {
     if (!isValidCity(cityName)) throw new Error("Invalid City");
@@ -52,9 +53,9 @@ async function getWeatherInfoFor(cityName, config) {
 
     return {
       location: locationName,
-      currentWeather: current,
-      hourlyWeather: hourly,
-      dailyWeather: daily,
+      currentWeather: reformateData(current),
+      hourlyWeather: filterData(hourly).map((data) => reformateData(data)),
+      dailyWeather: filterData(daily).map((data) => reformateData(data)),
     };
   } catch (err) {
     throw err;

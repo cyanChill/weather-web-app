@@ -2,7 +2,6 @@ import { getUnixTime } from "date-fns";
 
 import toastModule from "./toast";
 import { getWeatherInfoFor } from "./apiFetch";
-import { isObject, filterData, reformateData } from "./utility";
 import { fillCurrTemp, fillLocationInfo, setDailyWidgets, setHourlyWidgets } from "./domElements";
 
 async function updatePageContents(locationName, config = { initialCall: false }) {
@@ -11,21 +10,13 @@ async function updatePageContents(locationName, config = { initialCall: false })
 
     if (!rtnedInfo) return;
 
-    const {
-      location,
-      currentWeather,
-      filteredHourly,
-      filteredDaily,
-      formatedCurrent,
-      formatedHourly,
-      formatedDaily,
-    } = rtnedInfo;
+    const { location, currentWeather, hourlyWeather, dailyWeather } = rtnedInfo;
 
-    fillCurrTemp(formatedCurrent);
-    fillLocationInfo(location, formatedCurrent);
+    fillCurrTemp(currentWeather);
+    fillLocationInfo(location, currentWeather);
 
-    setHourlyWidgets(formatedHourly);
-    setDailyWidgets(formatedDaily);
+    setHourlyWidgets(hourlyWeather);
+    setDailyWidgets(dailyWeather);
 
     localStorage.setItem("locationName", location);
 
@@ -35,10 +26,7 @@ async function updatePageContents(locationName, config = { initialCall: false })
     }
 
     return {
-      location,
-      currentWeather,
-      hourlyWeather: filteredHourly,
-      dailyWeather: filteredDaily,
+      ...rtnedInfo,
     };
   } catch (err) {
     console.log(err);
@@ -59,28 +47,14 @@ async function compareWithCache(locationName, config) {
   if (
     config.forceUpdate ||
     !cachedInfo ||
-    (isObject(cachedInfo) && Object.keys(cachedInfo).length === 0) ||
-    !cachedInfo.location ||
-    !cachedInfo.currentWeather ||
-    !cachedInfo.hourlyWeather ||
-    !cachedInfo.dailyWeather ||
     getUnixTime(new Date()) - cachedInfo.currentWeather.dt > 10800000
   ) {
     console.log("Fetching new data");
 
     const recievedInfo = await getWeatherInfoFor(locationName, config);
 
-    const filteredHourly = filterData(recievedInfo.hourlyWeather);
-    const filteredDaily = filterData(recievedInfo.dailyWeather);
-
     return {
-      location: recievedInfo.location,
-      currentWeather: recievedInfo.currentWeather,
-      filteredHourly,
-      filteredDaily,
-      formatedCurrent: reformateData(recievedInfo.currentWeather),
-      formatedHourly: filteredHourly.map((data) => reformateData(data)),
-      formatedDaily: filteredDaily.map((data) => reformateData(data)),
+      ...recievedInfo,
     };
   } else {
     console.log("Using Cached Data");
@@ -88,11 +62,8 @@ async function compareWithCache(locationName, config) {
     return {
       location: cachedInfo.location,
       currentWeather: cachedInfo.currentWeather,
-      filteredHourly: cachedInfo.hourlyWeather,
-      filteredDaily: cachedInfo.dailyWeather,
-      formatedCurrent: reformateData(cachedInfo.currentWeather),
-      formatedHourly: cachedInfo.hourlyWeather.map((data) => reformateData(data)),
-      formatedDaily: cachedInfo.dailyWeather.map((data) => reformateData(data)),
+      hourlyWeather: cachedInfo.hourlyWeather,
+      dailyWeather: cachedInfo.dailyWeather,
     };
   }
 }

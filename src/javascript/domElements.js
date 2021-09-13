@@ -6,8 +6,8 @@ const currTempImg = currTempSec.querySelector(".weather-img");
 const currTempField = currTempSec.querySelector(".temp");
 const currTempDescription = currTempSec.querySelector(".weather-description");
 
+/* Takes in a formated weather data object */
 function fillCurrTemp(weatherObj) {
-  /* Temp depends on whether we're in imperial or metric */
   const temp = getCorrectUnitFormat(weatherObj.currTemp, "temperature");
   const description = toTitleCase(weatherObj.weatherInfo.description);
 
@@ -24,10 +24,9 @@ const humidityVal = locationInfoSec.querySelector("#humidity .value");
 const windSpeedVal = locationInfoSec.querySelector("#wind-speed .value");
 const visibilityVal = locationInfoSec.querySelector("#visibility .value");
 
+/* Takes in a formated weather data object */
 function fillLocationInfo(location, weatherObj) {
-  /* windSpeed depend on whether we're in imperial or metric systems */
   const windSpeed = getCorrectUnitFormat(weatherObj.windSpeed, "wind-speed");
-  /* Need to reduce visibility from meters/sec */
   const visibility = getCorrectUnitFormat(weatherObj.visibility, "visibility");
 
   locationName.textContent = toTitleCase(location);
@@ -40,6 +39,7 @@ function fillLocationInfo(location, weatherObj) {
 const hourlyWeatherSec = document.getElementById("hourly-weather");
 const dailyWeatherSec = document.getElementById("daily-weather");
 
+/* Takes in an array of formated weather data objects */
 function setHourlyWidgets(weatherObjs) {
   const limitWidgets = weatherObjs.slice(0, 23);
   const widgets = getWidgets("hour", limitWidgets);
@@ -47,6 +47,7 @@ function setHourlyWidgets(weatherObjs) {
   widgets.forEach((widget) => hourlyWeatherSec.appendChild(widget));
 }
 
+/* Takes in an array of formated weather data objects */
 function setDailyWidgets(weatherObjs) {
   const widgets = getWidgets("day", weatherObjs);
   dailyWeatherSec.textContent = "";

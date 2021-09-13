@@ -66,10 +66,9 @@ const pageTimer = (function () {
       console.log("Hourly Update From Cache");
 
       const currHourInfo = recievedInfo.hourlyWeather[0];
-      const formatedData = reformateData(currHourInfo);
 
-      fillCurrTemp(formatedData);
-      fillLocationInfo(localStorage.getItem("locationName"), formatedData);
+      fillCurrTemp(currHourInfo);
+      fillLocationInfo(localStorage.getItem("locationName"), currHourInfo);
 
       hourlyWeatherInfo.firstChild.remove();
       hourlyInterval.count++;
