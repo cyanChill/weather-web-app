@@ -76,10 +76,17 @@ const pageTimer = (function () {
 
       recievedInfo.hourlyWeather.shift();
       updateSessionCache("cachedInfo", recievedInfo);
+    } else if (isNewDay) {
+      console.log("Updating Data For New Day");
+      updateData();
     } else {
+      console.log("Tri-Hourly Update From Servers");
+      updateData();
+    }
+
+    function updateData() {
       hourlyInterval.count = 0;
 
-      console.log("Tri-Hourly Update From Servers");
       const location = localStorage.getItem("locationName");
       updatePageContents(location, { initialCall: true, forceUpdate: true }).then((data) =>
         updateSessionCache("cachedInfo", data)
