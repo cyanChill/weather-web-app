@@ -24,7 +24,7 @@ const toastModule = (function () {
 
     const removeTime = setTimeout(() => {
       removeToast(toast);
-    }, 10000);
+    }, 5000);
 
     closeToast.addEventListener("click", () => {
       removeToast(toast, removeTime);
