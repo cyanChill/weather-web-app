@@ -11,6 +11,10 @@ Live Demonstration: https://cyanchill-weather.netlify.app/
 - Auto-updates the data from the saved cache every hour
 - Auto-updates the data from the API every 3 hours and when the day changes
 
+## Potential Future Features
+
+- Display weather alerts (updates every 3 hours or when we change the location)
+
 ## Project Info
 
 More about the project can be found at: https://www.theodinproject.com/paths/full-stack-javascript/courses/javascript/lessons/weather-app
