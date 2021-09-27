@@ -7,3 +7,7 @@ https://cyanchill.github.io/weather-web-app/
 
 ## Images Used:
 1. Weather Icons from Dovora Interactive (https://www.dovora.com/resources/weather-icons/)
+
+# Note:
+
+This is the original weather-web-app I made. For the one made for The Odin Project, switch to the `the-odin-project` branch
